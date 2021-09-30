@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 class Functional
 {
@@ -21,5 +22,10 @@ public:
 				return (*first < *second);
 			});
 	}
+
+	static int countVowelsFirst(std::ifstream& file);
+	static int countVowelsSecond(std::ifstream& file);
+	static int countVowelsThird(std::ifstream& file);
+	static int countVowelsFourth(std::ifstream& file);
 };
 
