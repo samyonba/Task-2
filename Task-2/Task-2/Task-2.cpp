@@ -89,13 +89,25 @@ int main()
 
     Timer timer("Time");
 
-    int vowelsNumber = Functional::countVowelsSecond(file);
-    cout << "Number of vowels is " << vowelsNumber << endl;
+    int vowelsNumber = Functional::countVowelsFirst(file);
+
+    //int vowelsNumber = Functional::countVowelsSecond(file);
+
+    //int vowelsNumber = Functional::countVowelsThird(file);
 
     //int vowelsNumber = Functional::countVowelsFourth(file);
-    //cout << "Number of vowels is " << vowelsNumber << endl;
+    
 
+    cout << "Number of vowels is " << vowelsNumber << endl;
     timer.print();
+
+    /* Average time using:
+        ○ count_if + find:     850 ms
+        ○ count_if + loop for: 360 ms
+        ○ loop for + find:     650 ms
+        ○ loop for x2:         820 ms
+    */
+
 //-------------------------------
     
     return 0;
