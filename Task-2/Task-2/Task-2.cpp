@@ -1,6 +1,7 @@
 ﻿
 #include <iostream>
-#include <chrono>
+#include <string>
+#include <iomanip>
 #include "Functional.h"
 
 /*1. Реализуйте шаблонную функцию Swap, которая принимает два указателя и обменивает
@@ -15,101 +16,70 @@
     ○ 2 цикла for
 Замерьте время каждого способа подсчета и сделайте выводы.*/
 
-using namespace std;
-
-class Timer
-{
-private:
-    using clock_t = std::chrono::high_resolution_clock;
-    using second_t = std::chrono::duration<double, std::ratio<1> >;
-    std::string m_name;
-    std::chrono::time_point<clock_t> m_beg;
-    double elapsed() const
-    {
-        return std::chrono::duration_cast<second_t>(clock_t::now()
-            - m_beg).count();
-    }
-public:
-    Timer() : m_beg(clock_t::now()) { }
-    Timer(std::string name) : m_name(name), m_beg(clock_t::now()) { }
-    void start(std::string name) {
-        m_name = name;
-        m_beg = clock_t::now();
-    }
-    void print() const {
-        std::cout << m_name << ":\t" << elapsed() * 1000 << " ms" << '\n';
-    }
-};
-
 
 int main()
 {
 //---------- Задание 1 ----------
 
-    //int* first = new int(1);
-    //int* second = new int(2);
-    //cout << *first << " " << *second << endl;
+    std::cout << "----- Task 1 -----" << std::endl;
+    int* first = new int(1);
+    int* second = new int(2);
+    std::cout << "first: " << * first << " , second: " << *second << std::endl;
 
-    //Functional::swap<int>(first, second);
-    //cout << *first << " " << *second << endl;
+    Functional::swap<int>(first, second);
+    std::cout << "swap\n" << "first: " << *first << " , second: " << *second << "\n" << std::endl;
 
 //-------------------------------
 
 //---------- Задание 2 ----------
     
-    //vector<int*> intVector;
-    //for (size_t i = 0; i < 10; i++)
-    //{
-    //    int* a = new int(rand() &1000);
-    //    intVector.push_back(a);
-    //}
-    //cout << "[ ";
-    //for (int* a : intVector)
-    //{
-    //    cout << *a << " ";
-    //}
-    //cout << "] Data" << endl;
+    std::cout << "----- Task 2 -----" << std::endl;
+    std::vector<int*> intVector;
+    for (size_t i = 0; i < 10; i++)
+    {
+        int* a = new int(rand() &1000);
+        intVector.push_back(a);
+    }
+    std::cout << "[ ";
+    for (int* a : intVector)
+    {
+        std::cout << *a << " ";
+    }
+    std::cout << "] - Data" << std::endl;
 
-    //Functional::sortPointers<int>(intVector);
-    //cout << "[ ";
-    //for (int* a : intVector)
-    //{
-    //    cout << *a << " ";
-    //}
-    //cout << "] Sorted data" << endl;
+    Functional::sortPointers<int>(intVector);
+    std::cout << "[ ";
+    for (int* a : intVector)
+    {
+        std::cout << *a << " ";
+    }
+    std::cout << "] - Sorted data\n" << std::endl;
 
 //-------------------------------
 
 //---------- Задание 3 ----------
-
+    std::cout << "----- Task 3 -----" << std::endl;
     setlocale(LC_ALL, "rus");
-    std::ifstream file("C:\\Users\\1\\Desktop\\C++ сложные моменты\\Projects\\Task-2\\Task-2\\Input.txt", ios_base::in);
+    std::ifstream file("C:\\Users\\1\\Desktop\\C++ сложные моменты\\Projects\\Task-2\\Task-2\\Input.txt", std::ios_base::in);
     if (!file.is_open())
-        cout << "Can not open file" << endl;
+        std::cout << "Can not open file" << std::endl;
 
-    Timer timer("Time");
+    std::string vowelsString = "аоуэыяёеюи";
+    std::string sourseString;
+    std::string buffer;
+    while (file)
+    {
+        std::getline(file, buffer);
+        sourseString.append(buffer);
+    }
+    std::transform(sourseString.begin(), sourseString.end(), sourseString.begin(), [](unsigned char c) {return std::tolower(c); });
 
-    int vowelsNumber = Functional::countVowelsFirst(file);
-
-    //int vowelsNumber = Functional::countVowelsSecond(file);
-
-    //int vowelsNumber = Functional::countVowelsThird(file);
-
-    //int vowelsNumber = Functional::countVowelsFourth(file);
-    
-
-    cout << "Number of vowels is " << vowelsNumber << endl;
-    timer.print();
-
-    /* Average time using:
-        ○ count_if + find:     850 ms
-        ○ count_if + loop for: 360 ms
-        ○ loop for + find:     650 ms
-        ○ loop for x2:         820 ms
-    */
+    std::cout << std::setw(32) << "vowels: " << Functional::countVowels_count_if_find(sourseString, vowelsString) << "\n" << std::endl;
+    std::cout << std::setw(32) << "vowels: " << Functional::countVowels_count_if_for(sourseString, vowelsString) << "\n" << std::endl;
+    std::cout << std::setw(32) << "vowels: " << Functional::countVowels_for_find(sourseString, vowelsString) << "\n" << std::endl;
+    std::cout << std::setw(32) << "vowels: " << Functional::countVowels_for_for(sourseString, vowelsString) << "\n" << std::endl;
 
 //-------------------------------
     
     return 0;
 }
-

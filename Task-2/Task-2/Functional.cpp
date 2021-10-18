@@ -1,77 +1,67 @@
 #include "Functional.h"
 
-int Functional::countVowelsFirst(std::ifstream& file)
+int Functional::countVowels_count_if_find(std::string& source, std::string& vowels)
 {
-	unsigned long vowelsNumber = 0;
-	std::string buffer;
-	const std::vector<char> vowels{ 'À', 'à', 'Î', 'î', 'Ó', 'ó', 'Ý', 'ý', 'Û', 'û', 'ß', 'ÿ', '¨', '¸', 'Å', 'å', 'Þ', 'þ', 'È', 'è'};
-	while (!file.eof())
-	{
-		file >> buffer;
-		vowelsNumber += std::count_if(buffer.begin(), buffer.end(), [vowels](char ch)
-			{
-				return std::find(vowels.begin(), vowels.end(), ch) != vowels.end();
-			});
-	}
-	return vowelsNumber;
-}
+	Timer timer("countVowels_count_if_find time");
 
-int Functional::countVowelsSecond(std::ifstream& file)
-{
-	unsigned long vowelsNumber = 0;
-	std::string buffer;
-	const std::vector<char> vowels{ 'À', 'à', 'Î', 'î', 'Ó', 'ó', 'Ý', 'ý', 'Û', 'û', 'ß', 'ÿ', '¨', '¸', 'Å', 'å', 'Þ', 'þ', 'È', 'è'};
-	while (!file.eof())
-	{
-		file >> buffer;
-		vowelsNumber += std::count_if(buffer.begin(), buffer.end(), [vowels](char ch)
-			{
-				for (char vowel : vowels)
-				{
-					if (vowel == ch)
-					{
-						return true;
-					}
-				}
-				return false;
-			});
-	}
-	return vowelsNumber;
-}
-
-int Functional::countVowelsThird(std::ifstream& file)
-{
-	unsigned long vowelsNumber = 0;
-	std::string buffer;
-	const std::vector<char> vowels{ 'À', 'à', 'Î', 'î', 'Ó', 'ó', 'Ý', 'ý', 'Û', 'û', 'ß', 'ÿ', '¨', '¸', 'Å', 'å', 'Þ', 'þ', 'È', 'è' };
-	while (!file.eof())
-	{
-		file >> buffer;
-		for (char symbol : buffer)
+	int vowelsNumber = std::count_if(source.begin(), source.end(), [vowels](char c)
 		{
-			if (std::find(vowels.begin(), vowels.end(), symbol) != vowels.end())
-				vowelsNumber++;
-		}
-	}
+			return std::find(vowels.begin(), vowels.end(), c) != vowels.end();
+		});
+
+	timer.print();
 	return vowelsNumber;
 }
 
-int Functional::countVowelsFourth(std::ifstream& file)
+int Functional::countVowels_count_if_for(std::string& source, std::string& vowels)
 {
-	unsigned long vowelsNumber = 0;
-	std::string buffer;
-	const std::vector<char> vowels{ 'À', 'à', 'Î', 'î', 'Ó', 'ó', 'Ý', 'ý', 'Û', 'û', 'ß', 'ÿ', '¨', '¸', 'Å', 'å', 'Þ', 'þ', 'È', 'è' };
-	while (!file.eof())
-	{
-		file >> buffer;
-		for (size_t i = 0; i < buffer.size(); i++)
+	Timer timer("countVowels_count_if_for time");
+
+	int vowelsNumber = std::count_if(source.begin(), source.end(), [vowels](char c)
 		{
 			for (char vowel : vowels)
 			{
-				if (buffer.at(i) == vowel)
-					vowelsNumber++;
+				if (vowel == c)
+				{
+					return true;
+				}
 			}
+			return false;
+		});
+
+	timer.print();
+	return vowelsNumber;
+}
+
+int Functional::countVowels_for_find(std::string& source, std::string& vowels)
+{
+	Timer timer("countVowels_for_find time");
+	
+	int vowelsNumber = 0;
+	for (char c : source)
+	{
+		if (std::find(vowels.begin(), vowels.end(), c) != vowels.end())
+			++vowelsNumber;
+	}
+
+	timer.print();
+	return vowelsNumber;
+}
+
+int Functional::countVowels_for_for(std::string& source, std::string& vowels)
+{
+	Timer timer("countVowels_for_for time");
+
+	int vowelsNumber = 0;
+	for (char c : source)
+	{
+		for (char vowel : vowels)
+		{
+			if (c == vowel)
+				++vowelsNumber;
 		}
 	}
+
+	timer.print();
 	return vowelsNumber;
 }
